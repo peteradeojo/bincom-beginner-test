@@ -1,0 +1,25 @@
+{% extends './base.html' %}
+{% block content %}
+    <h1>Todo List</h1>
+    <ul class='list-group'>
+        {% for task in tasks %}
+            <li class="list-group-item {% if task.status %}bg-success text-white{% endif %}">
+                <p class='text-wrap'>
+                    {{ task }}
+                </p>
+                <p><a href="{% url 'tasks:toggle' task.id %}">
+                    {% if task.status %}
+                        Mark Undone
+                    {% else %}
+                        Mark Done
+                    {% endif %}
+                </a>
+                &nbsp;&nbsp;
+                <a href="{% url 'tasks:delete' task.id %}">Delete</a></p>
+                <p>{{task.date_added}}</p>
+            </li>
+        {% empty %}
+            <li>No task has been added</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
