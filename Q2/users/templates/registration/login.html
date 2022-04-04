@@ -1,0 +1,17 @@
+{% extends 'tasks/base.html' %}
+{% load bootstrap5 %}
+
+
+{% block auth_content %}
+    {% if form.errors %}
+        <p>
+            Your username and password didn't match. Please try again.
+        </p>
+    {% endif %}
+    <form action="{% url 'users:login' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button name='submit' class="btn btn-primary">Login</button>
+        <input type="hidden" name="next" value="{% url 'tasks:index' %}" />
+    </form>
+{% endblock auth_content %}

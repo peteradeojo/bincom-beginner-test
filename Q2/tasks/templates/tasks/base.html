@@ -10,21 +10,59 @@
         {% bootstrap_javascript %}
     </head>
     <body>
-        <main class='container-fluid'>
-            <div class="row pt-4">
-                <div class="col-sm-6">
-                    {% block content %}
-                    {% endblock content %}
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark bg">
+            <div class="container">
+                <a href="{% url 'tasks:index'%}" class="navbar-brand">Todo</a>
+                <button class="navbar-toggler"
+                        data-bs-target="#navbar"
+                        data-bs-toggle="collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="nav-link">Hello, {{user.username}}</span>
+                        </li>
+                            <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link">Log Out</a></li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="{% url 'users:login' %}" class="nav-link">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'users:register' %}" class="nav-link">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
-                <aside class="col-sm-6">
-                    <h3>Add Task</h3>
-                    <form action="{% url 'tasks:new_task' %}" method='POST'>
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <button type='submit' class='btn btn-primary'>Submit</button>
-                    </form>
-                </aside>
             </div>
+        </nav>
+        <header class="container">
+            <h1>Todo List</h1>
+            <p>
+                Keep Track of all your important tasks in one place.
+            </p>
+        </div>
+        <main class='container-fluid'>
+            {% if user.is_authenticated %}
+                <div class="row pt-4">
+                    <div class="col-sm-6">
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
+                    <aside class="col-sm-6">
+                        <h3>Add Task</h3>
+                        <form action="{% url 'tasks:new_task' %}" method='POST'>
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <button type='submit' class='btn btn-primary'>Submit</button>
+                        </form>
+                    </aside>
+                </div>
+            {% else %}
+                {% block auth_content %}
+                {% endblock auth_content %}
+            {% endif %}
         </main>
     </body>
 </html>

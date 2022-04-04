@@ -1,0 +1,8 @@
+{% extends 'tasks/base.html' %}
+{% load bootstrap5 %}
+{% block auth_content %}
+  <form action="{% url 'users:register' %}" method="post">
+    {% bootstrap_form form %}
+    <button class="btn btn-primary">Sign Up</button>
+  </form>
+{% endblock auth_content %}
